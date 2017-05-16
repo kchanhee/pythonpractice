@@ -1,0 +1,5 @@
+class Solution:
+    # @param A : tuple of integers
+    # @param B : integer
+    # @return an integer
+    def diffPossible(self, A, B):
