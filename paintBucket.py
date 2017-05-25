@@ -17,14 +17,14 @@ def fillImage(x, y, oldColor, newColor):
     if list(pixmap[x][y]) != oldColor:
         return
     if y < 0 or y >= MAX_Y:
-        print 'y = %d' % y + 'MAX_Y = %d' % MAX_Y
+        print('y = %d' % y + 'MAX_Y = %d' % MAX_Y)
         return
     if x < 0 or x >= MAX_X:
-        print 'x = %d' % x + 'MAX_X = %d' % MAX_X
+        print ('x = %d' % x + 'MAX_X = %d' % MAX_X)
         return
     pixmap[x][y] = newColor
     S.add((x,y))
-    print 'x = %d' % x + ', y = %d' % y
+    print ('x = %d' % x + ', y = %d' % y)
     fillImage(x + 1, y, oldColor, newColor) # right
     fillImage(x - 1, y, oldColor, newColor) # left
     fillImage(x, y - 1, oldColor, newColor) # down

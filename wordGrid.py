@@ -25,54 +25,63 @@
 def findWordsInGrid(grid, words):
   word_position_dict = {}
   for i in range(4):
-      for j in range(4):
-          print word_position_dict
-          print grid[i][j]
-          if grid[i][j] in word_position_dict.keys():
-              
-              word_position_dict[grid[i][j]].add(set([(i,j)]))
-          else:
-              word_position_dict[grid[i][j]] = set([(i,j)])
+    for j in range(4):
+    # print word_position_dict
+    # print grid[i][j]
+      if grid[i][j] in word_position_dict.keys():
+          word_position_dict[grid[i][j]].add((i,j))
+      else:
+          word_position_dict[grid[i][j]] = set([(i,j)])
   found_words = []
   for word in words:
-      if wordFound(grid, word_position_dict, word):
-          found_words.append(word)
+    # save word (if there is a valid path)
+    if wordFound(word_position_dict, word):
+      found_words.append(word)
   return found_words
   
-def wordFound(grid, word_position_dict, word, visited=None):
-    if visited is None:
-        visited = []
-    vertex = word_position_dict[word[0]] - set(visited)
-    if len(word) == 1:
-        if  word in word_position_dict.keys():
-            return isAdjacent(word_position_dict[word[0]] - set(visited), visited.pop())
-        else:
-            return False
-    for v in vertex:
-        if vertex not in visited:
-            last_vertex = visited.pop()
-            if isAdjacent(last_vertex, vertex):
-                visited.append(last_vertex)
-                visited.append(vertex)
-                return wordFound(grid, word_position_dict, word[1:], visited)    
-            else:
-                continue
-        else:
-            return False
-    
+# need to see if there's a valid path from front to end of string
+# This method prints the path if there is one and None if not.
+# Uses DFS and backtracing via recursion to generate paths.
+
+def wordFound(word_position_dict, word, visited=None):
+  if visited is None:
+    visited = []
+  # print word[0]
+  # At end of word return empty
+  if word == "":
+    return []
+  # Check if next letter is even in the grid
+  if word[0] not in word_position_dict.keys():
+    return []
+  visited_len = len(visited)
+  for v in word_position_dict[word[0]]:
+    if v in visited:
+      continue
+    if visited_len > 0:
+      if not isAdjacent(v, visited[-1]):
+        continue
+    else:
+      if not isAdjacent(v, []):
+        continue
+    word_path = wordFound(word_position_dict, word[1:], visited + [v])
+    if word_path is not None:
+      return [v] + word_path
+  return None
+
+# Helper Method to check if two points are adjacent
+# pos2 will be empty in the beginning so we return True. (beginning of DFS)
+
 def isAdjacent(pos1, pos2):
-    if pos1 is None or pos2 is None:
-        return False
-    r1, c1 = pos1
-    r2, c2 = pos2
-    if abs(r2-r1) <= 1 and abs(c2-c1) <= 1:
-        return True
-    return False
+  if len(pos2) == 0:
+      return True
+  return abs(pos2[1] - pos1[1]) <= 1 and abs(pos2[0] - pos1[0]) <= 1
+  
+  
     
 grid = [['Y','K','D','U'],
         ['A','N','L','P'],
         ['U','T','S','A'],
         ['B','D','A','M']]
-words = ['MALT', 'GOOG', 'MAM']
+words = ['MALT', 'GOOG', 'MAM', 'ANLP', 'UTSA', 'YKDUPLNAUTSAMADBU', 'YKDUPLNAUTSAMADB', 'YAUB', 'YKNA', 'PSDU', 'NAUT', '']
 
-print findWordsInGrid(grid, words)
+print set(findWordsInGrid(grid, words)) == set(['MALT', 'ANLP', 'UTSA', 'YKDUPLNAUTSAMADB', 'YAUB', 'YKNA', 'PSDU', 'NAUT'])
