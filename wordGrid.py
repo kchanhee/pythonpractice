@@ -3,7 +3,7 @@
   *
   * Find words by:
   * 
-  * Visiting immediately adjacent tiles.
+  * VALID WORD = string of tiles visiting immediately adjacent tiles.
   *
   * Diagonals are valid moves.
   *
@@ -14,12 +14,13 @@
   * U T S A
   * B D A M
   *
-  * list of words 
+  * Input: LIST
   * MALT
   * GOOG
   * MAM
   *
-  * 200K other words
+  * GOAL: Return list of valid words given grid.
+  * EXAMPLE: the input list give should return ['MALT']
   */'''
   
 def findWordsInGrid(grid, words):
