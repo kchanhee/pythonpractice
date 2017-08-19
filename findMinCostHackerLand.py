@@ -45,7 +45,7 @@ for a0 in xrange(q):
         road_count += len(curr_roads) - 1
         lib_count += 1
         # print curr_roads
-    print min(lib_count + road_count * y, len(graph.keys()) * x)
+    print min(lib_count * x + road_count * y, len(graph.keys()) * x)
 
 
 
